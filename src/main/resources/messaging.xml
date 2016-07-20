@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/rabbit"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+    <!--fanout 测试 start-->
+    <fanout-exchange name="spring.air.fanout.exchange">
+        <bindings>
+            <binding queue="fanoutExchangeQueue_1"/>
+            <binding queue="fanoutExchangeQueue_2"/>
+        </bindings>
+    </fanout-exchange>
+
+    <queue id="fanoutExchangeQueue_1"/>
+    <queue id="fanoutExchangeQueue_2"/>
+    <!--fanout 测试 end-->
+
+    <!--direct 测试 start-->
+    <direct-exchange name="spring.air.direct.exchange">
+        <bindings>
+            <binding queue="directExchangeQueue_1" key="spring.air.direct.queue.first"/>
+            <binding queue="directExchangeQueue_2" key="spring.air.direct.queue.second"/>
+            <binding queue="directExchangeQueue_3" key="spring.air.direct.queue.#"/>
+        </bindings>
+    </direct-exchange>
+
+    <queue id="directExchangeQueue_1"/>
+    <queue id="directExchangeQueue_2"/>
+    <queue id="directExchangeQueue_3"/>
+    <!--direct 测试 end-->
+    <!--topic exchange start-->
+
+    <topic-exchange name="spring.air.topic.exchange">
+        <bindings>
+            <binding pattern="*.*.topic.*.first" queue="topicExchangeQueue_1"/>
+            <binding pattern="*.*.topic.#" queue="topicExchangeQueue_2"/>
+            <binding pattern="spring.#" queue="topicExchangeQueue_3"/>
+        </bindings>
+    </topic-exchange>
+    <queue id="topicExchangeQueue_1"/>
+    <queue id="topicExchangeQueue_2"/>
+    <queue id="topicExchangeQueue_3"/>
+    <!--topic exchange end-->
+    <!--header exchange start-->
+    <headers-exchange name="spring.air.headers.exchange">
+        <bindings>
+            <binding key="encoding" value="utf8" queue="headersExchangeQueue_1"/>
+            <binding key="encoding" value="gbk" queue="headersExchangeQueue_2"/>
+            <binding key="timezone" value="asia" queue="headersExchangeQueue_3"/>
+        </bindings>
+    </headers-exchange>
+    <queue id="headersExchangeQueue_1"/>
+    <queue id="headersExchangeQueue_2"/>
+    <queue id="headersExchangeQueue_3"/>
+    <!--header exchange end-->
+    <!--replay message test-->
+    <queue name="spring.air.send.message.queue"/>
+    <!--replay message test-->
+</beans:beans>
